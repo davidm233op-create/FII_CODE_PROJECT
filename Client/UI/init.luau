@@ -331,6 +331,13 @@ function UI:Init()
 	UI:LoadPlayerGui()
 	HandleUIStrokesDimensions()
 	LoadClasses()
+	
+	require(script.Alerts):SendAlert(
+		"Test text!",
+		{
+			textColor = Color3.fromRGB(255, 82, 82)
+		}
+	)
 end
 
 

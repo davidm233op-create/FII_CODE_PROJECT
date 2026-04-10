@@ -2,6 +2,7 @@ local StoryClient = {}
 
 -- // Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 
 -- // Storages
 local Modules = ReplicatedStorage.Modules
@@ -9,12 +10,20 @@ local Modules = ReplicatedStorage.Modules
 -- // Modules
 local Communicator = require(Modules.Communicator)
 
+-- // Local Player
+local LocalPlayer = Players.LocalPlayer
+
 -- // Classes
 local Interactables = require(script.Parent.UI.Interactables)
 local Objective = require(script.Parent.UI.Objective)
+local Alerts = require(script.Parent.UI.Alerts)
 
 -- // Workspace
 local LightPuzzleFolder = workspace:WaitForChild("LightPuzzle")
+
+function getTypeOfPlayer()
+	return LocalPlayer:GetAttribute("PlayerIndex")
+end
 
 local StoryFunctions = {
 	StartStory = {
@@ -28,6 +37,11 @@ local StoryFunctions = {
 					if not clicker:HasTag("Interactable") then continue end
 					
 					Interactables.OnInteractablePressed(clicker, Enum.KeyCode.E):Connect(function()
+						if getTypeOfPlayer() == "P2" then
+							Alerts:SendAlert("You're too weak!", {textColor = Color3.fromRGB(255, 92, 92)})
+							return
+						end
+						
 						Communicator.RemoteEvents.StoryAction:FireServer("RotateMirror", mirror, clicker)
 					end)
 				end
@@ -40,6 +54,11 @@ local StoryFunctions = {
 					if not clicker:HasTag("Interactable") then continue end
 
 					Interactables.OnInteractablePressed(clicker, Enum.KeyCode.E):Connect(function()
+						if getTypeOfPlayer() == "P2" then
+							Alerts:SendAlert("You're too weak!", {textColor = Color3.fromRGB(255, 92, 92)})
+							return
+						end
+						
 						Communicator.RemoteEvents.StoryAction:FireServer("MoveWall", wall, clicker)
 					end)
 				end

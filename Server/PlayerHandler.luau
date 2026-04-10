@@ -11,6 +11,7 @@ local Modules = ReplicatedStorage.Modules
 local Communicator = require(Modules.Communicator)
 
 function OnPlayerAdded(player: Player)
+	player:SetAttribute("PlayerIndex", "P2")
 	PlayerHandler.TotalPlayers += 1
 	
 	if PlayerHandler.TotalPlayers == 1 then
