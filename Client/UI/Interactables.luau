@@ -135,18 +135,25 @@ function HandleInteractableAnimations()
 	RunService.Heartbeat:Connect(function()
 		local originPosition = GetCharacterOriginPosition()
 		local closestInteractable = GetClosestInteractable(originPosition)
-		if closestInteractable == Interactables.lastInteractable then
+
+		local visibleChanged = closestInteractable == Interactables.lastInteractable
+		and closestInteractable ~= nil
+		and (closestInteractable:GetAttribute("Visible") ~= Interactables.lastVisible)
+
+		if closestInteractable == Interactables.lastInteractable and not visibleChanged then
 			return
 		end
-		
-		
-		if closestInteractable == nil then
+
+		local isVisible = closestInteractable ~= nil and closestInteractable:GetAttribute("Visible") ~= false
+
+		if not isVisible then
 			ToggleInteractableBillboard(false)
 		else
 			ToggleInteractableBillboard(true, closestInteractable)
 		end
-		
+
 		Interactables.lastInteractable = closestInteractable
+		Interactables.lastVisible = closestInteractable and closestInteractable:GetAttribute("Visible")
 	end)
 	
 
@@ -186,7 +193,8 @@ function HandleInteractableWrappers()
 		if Interactables.WrapperKeybinds[input.KeyCode] == nil then return end
 		
 		for interactable, funcTable in Interactables.WrapperKeybinds[input.KeyCode] do
-			if interactable == Interactables.lastInteractable then
+			local isVisible = interactable:GetAttribute("Visible") == true or interactable:GetAttribute("Visible") == nil
+			if interactable == Interactables.lastInteractable and isVisible then
 				task.spawn(toggleKeybindPressed, true)
 				break
 			end
@@ -198,7 +206,8 @@ function HandleInteractableWrappers()
 		if Interactables.WrapperKeybinds[input.KeyCode] == nil then return end
 
 		for interactable, funcTable in Interactables.WrapperKeybinds[input.KeyCode] do
-			if interactable == Interactables.lastInteractable then
+			local isVisible = interactable:GetAttribute("Visible") == true or interactable:GetAttribute("Visible") == nil
+			if interactable == Interactables.lastInteractable and isVisible then
 				task.spawn(toggleKeybindPressed, false)
 				for _, func in funcTable do
 					task.spawn(func)
@@ -259,6 +268,7 @@ end
 function Interactables:Init()
 	HandleInteractableAnimations()
 	HandleInteractableWrappers()
+
 end
 
 return Interactables

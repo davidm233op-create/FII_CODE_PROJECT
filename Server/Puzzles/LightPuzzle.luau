@@ -155,6 +155,10 @@ function LightPuzzle.EndPuzzle(puzzleFolder: puzzleFolderType)
 	
 end
 
+function LightPuzzle.OnPuzzleAction(player: Player, action: string)
+
+end
+
 
 function LightPuzzle:Init()
 	

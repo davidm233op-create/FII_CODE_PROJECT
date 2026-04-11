@@ -17,13 +17,16 @@ local LocalPlayer = Players.LocalPlayer
 local Interactables = require(script.Parent.UI.Interactables)
 local Objective = require(script.Parent.UI.Objective)
 local Alerts = require(script.Parent.UI.Alerts)
+local UI = require(script.Parent.UI)
 
 -- // Workspace
-local LightPuzzleFolder = workspace:WaitForChild("LightPuzzle")
+local LightPuzzleFolder = workspace:WaitForChild("Puzzles"):WaitForChild("LightPuzzles"):WaitForChild("LightPuzzle")
 
 function getTypeOfPlayer()
 	return LocalPlayer:GetAttribute("PlayerIndex")
 end
+
+
 
 local StoryFunctions = {
 	StartStory = {
@@ -38,7 +41,7 @@ local StoryFunctions = {
 					
 					Interactables.OnInteractablePressed(clicker, Enum.KeyCode.E):Connect(function()
 						if getTypeOfPlayer() == "P2" then
-							Alerts:SendAlert("You're too weak!", {textColor = Color3.fromRGB(255, 92, 92)})
+							UI.alertPlayerTypeIncompatible()
 							return
 						end
 						
@@ -55,7 +58,7 @@ local StoryFunctions = {
 
 					Interactables.OnInteractablePressed(clicker, Enum.KeyCode.E):Connect(function()
 						if getTypeOfPlayer() == "P2" then
-							Alerts:SendAlert("You're too weak!", {textColor = Color3.fromRGB(255, 92, 92)})
+							UI.alertPlayerTypeIncompatible()
 							return
 						end
 						

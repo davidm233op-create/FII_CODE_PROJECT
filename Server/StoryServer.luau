@@ -33,7 +33,7 @@ end
 local StoryFunctions = {
 	StartStory = {
 		func =  function()
-			local puzzleFolder = workspace.LightPuzzle
+			local puzzleFolder = workspace.Puzzles.LightPuzzles.LightPuzzle
 			LightPuzzle.StartPuzzle(puzzleFolder)
 			Communicator.RemoteEvents.StoryAction:FireAllClients("StartStory")
 		end

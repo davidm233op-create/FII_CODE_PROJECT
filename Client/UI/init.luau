@@ -18,6 +18,39 @@ local CurrentCamera = workspace.CurrentCamera
 --Classes
 local Tweens = require(script.Parent.Tweens)
 local Sounds = require(script.Parent.Sounds)
+local Alerts
+
+function getTypeOfPlayer()
+	return LocalPlayer:GetAttribute("PlayerIndex")
+end
+
+function UI.alertPlayerTypeIncompatible()
+		local playerIndex = getTypeOfPlayer()
+
+		if playerIndex == "P1" then
+			local sentences = {
+				"Need more brain!",
+				"IQ too low!",
+				"Read a book first!",
+				"Not enough wisdom!",
+				"Need more smarts!",
+				"Learn more maths first!",
+			}
+
+			Alerts:SendAlert(sentences[math.random(1, #sentences)], {textColor = Color3.fromRGB(255, 92, 92)})
+		elseif playerIndex == "P2" then
+			local sentences = {
+				"You're too weak!",
+				"Not strong enough!",
+				"Need more muscles!",
+				"Go to the gym first!",
+				"Too smart for this!",
+				"IQ too high for this!",
+			}
+
+			Alerts:SendAlert(sentences[math.random(1, #sentences)], {textColor = Color3.fromRGB(255, 92, 92)})
+		end
+	end
 
 local Abbreviations = {"k", "M", "B", "T", "Qa", "Qn", "Sx", "Sp", "Oc", "N"} -- Number Abbreviations
 
@@ -45,7 +78,9 @@ function UI.ApplyButtonTweens(Hitbox: TextButton, Button, Offset, Time, ES, ED, 
 		DefaultRotation = rotatedItem.Rotation
 	end
 	
-	Hitbox.MouseEnter:Connect(function()
+	local connections = {}
+	
+	connections[1] = Hitbox.MouseEnter:Connect(function()
 		Sounds:Play("ButtonOn")
 		Tweens.Tween(Button, "Size", DefaultSize + UDim2.new(Offset,0,Offset,0), Time, ES, ED)
 		if rotationInfluence and rotatedItem then
@@ -53,23 +88,25 @@ function UI.ApplyButtonTweens(Hitbox: TextButton, Button, Offset, Time, ES, ED, 
 		end
 	end)
 
-	Hitbox.MouseLeave:Connect(function()
+	connections[2] = Hitbox.MouseLeave:Connect(function()
 		Tweens.Tween(Button, "Size", DefaultSize, Time, ES, ED)
 		if rotationInfluence and rotatedItem then
 			Tweens.Tween(rotatedItem, "Rotation", DefaultRotation, Time, ES, ED)
 		end
 	end)
 	
-	if params and params.onlyHover == true then return end
+	if params and params.onlyHover == true then return connections end
 
-	Hitbox.MouseButton1Down:Connect(function()
+	connections[3] = Hitbox.MouseButton1Down:Connect(function()
 		Tweens.Tween(Button, "Size", DefaultSize, Time, ES, ED)
 	end)
 
-	Hitbox.MouseButton1Up:Connect(function()
+	connections[4] = Hitbox.MouseButton1Up:Connect(function()
 		Sounds:Play("ButtonUp")
 		Tweens.Tween(Button, "Size", DefaultSize + UDim2.new(Offset,0,Offset,0), Time, ES, ED)
 	end)
+	
+	return connections
 end
 
 function UI.ApplyStrokeButtonTweens(StrokeTable, newColor: Color3, Hitbox: TextButton, Button, Offset, Time, ES, ED, rotationInfluence, rotatedItem, newThickness)
@@ -332,12 +369,7 @@ function UI:Init()
 	HandleUIStrokesDimensions()
 	LoadClasses()
 	
-	require(script.Alerts):SendAlert(
-		"Test text!",
-		{
-			textColor = Color3.fromRGB(255, 82, 82)
-		}
-	)
+	Alerts = require(script.Alerts)
 end
 
 

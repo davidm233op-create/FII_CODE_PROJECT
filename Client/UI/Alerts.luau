@@ -74,7 +74,7 @@ function Alerts:SendAlert(alertText: string, cosmetics: {})
 	local strokeThickness = cosmetics.strokeThickness or 2
 	local timeToDisappear = cosmetics.timeToDisappear or 2
 	local sound = cosmetics.sound
-	local font = cosmetics.font or Font.new("Roboto Mono", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	local font = cosmetics.font or Font.fromName("RobotoMono", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
 	
 	local alertLabel = Prefab_AlertLabel:Clone()
 	alertLabel.TextTransparency = 1
