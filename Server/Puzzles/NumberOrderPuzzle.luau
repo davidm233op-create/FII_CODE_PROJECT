@@ -1,7 +1,17 @@
 local NumberOrderPuzzle = {}
 
+-- // Services
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- // Storages
+local Modules = ReplicatedStorage.Modules
+
+-- // Modules
+local Communicator = require(Modules.Communicator)
+
 -- // Classes
 local Tweens = require(game.StarterPlayer.StarterPlayerScripts.Client.Tweens)
+local Sounds = require(game.ServerScriptService.Server.Sounds)
 
 local function shuffleTable(t)
 	for i = #t, 2, -1 do
@@ -12,12 +22,25 @@ local function shuffleTable(t)
 	return t
 end
 
+local CustomActions = {
+	["Start"] = function(player: Player, action: string, puzzle)
+		if action ~= "Completed" then return end
+		Communicator.BindableEvents.StoryAction:Fire(player, "ServerRoomUnlocked", puzzle)
+	end,
+}
+
 function NumberOrderPuzzle.OnPuzzleAction(player: Player, action: string, ...)
+	local puzzle = ...
 	if action == "Completed" then
-		local puzzle = ...
+		Sounds:PlayUnderInstance("PannelComplete", puzzle.Interactable, true)
+		
 		for _, v in puzzle.Details.Lights:GetChildren() do
 			Tweens.Tween(v, "Color", Color3.fromRGB(255, 102, 42), 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 		end
+	end
+	
+	if CustomActions[puzzle.Name] then
+		CustomActions[puzzle.Name](player, action, ...)
 	end
 end
 

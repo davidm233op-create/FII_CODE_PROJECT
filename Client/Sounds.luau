@@ -147,6 +147,24 @@ function Sounds:Play(soundName: string, randomPitch: {})
 	return sound
 end
 
+function Sounds:PlayWithPitch(soundName: string, octave: number)
+	local originalSound: Sound = Sounds[soundName]
+	if not originalSound then return end
+
+	local sound = originalSound:Clone()
+	sound.Parent = PlayingSounds
+	
+	local pitchEffect = sound:FindFirstChildWhichIsA("PitchShiftSoundEffect")
+	if pitchEffect then
+		pitchEffect.Octave = octave
+	end
+	
+	sound:Play()
+	game.Debris:AddItem(sound, sound.TimeLength + 1)
+
+	return sound
+end
+
 
 return Sounds
 

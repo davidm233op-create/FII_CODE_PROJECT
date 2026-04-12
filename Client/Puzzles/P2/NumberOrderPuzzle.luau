@@ -47,9 +47,8 @@ end
 function CompletePuzzle(puzzle: Model)
 	task.spawn(function()
 		Communicator.RemoteEvents.PuzzleAction:FireServer("NumberOrderPuzzle", "Completed", puzzle)
-
-		Sounds:Play("PannelComplete")
 		task.wait(2)
+		LocalPlayer:SetAttribute("inPuzzle", false)
 		PuzzleFrame.Visible = false
 		CurrentCamera.CameraType = Enum.CameraType.Custom
 	end)
@@ -57,6 +56,7 @@ end
 
 
 function ExitPuzzle(puzzle: Model)
+	LocalPlayer:SetAttribute("inPuzzle", false)
 	PuzzleFrame.Visible = false
 	CurrentCamera.CameraType = Enum.CameraType.Custom
 	puzzle.Interactable:SetAttribute("Visible", true)
@@ -102,8 +102,8 @@ function AccessPuzzle(puzzle: Model)
 						task.spawn(function()
 							Sounds:Play("ButtonPressed")
 							task.wait(0.2)
-							Sounds["ShortBeep"].PitchShiftSoundEffect.Octave = 0.7 + orderIndex * 0.04
-							Sounds:Play("ShortBeep")
+							Sounds["NumberOrderBeep"].PitchShiftSoundEffect.Octave = 0.7 + orderIndex * 0.04
+							Sounds:Play("NumberOrderBeep")
 						end)
 					end
 
@@ -138,6 +138,8 @@ function NumberOrderPuzzle:Init()
 				UI.alertPlayerTypeIncompatible()
 				return
 			end
+			if LocalPlayer:GetAttribute("inPuzzle") then return end
+			LocalPlayer:SetAttribute("inPuzzle", true)
 			AccessPuzzle(puzzle)
 		end)
 	end

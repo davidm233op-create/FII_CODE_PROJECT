@@ -59,8 +59,8 @@ function CompletePuzzle(puzzle: Model)
 		Communicator.RemoteEvents.PuzzleAction:FireServer("CablePuzzle", "Completed", puzzle, cablesToReplicate)
 		cablesToReplicate = puzzle.CableHolder:GetChildren()
 		
-		Sounds:Play("PannelComplete")
 		task.wait(2)
+		LocalPlayer:SetAttribute("inPuzzle", false)
 		PuzzleFrame.Visible = false
 		CurrentCamera.CameraType = Enum.CameraType.Custom
 		for _, v in cablesToReplicate do
@@ -71,6 +71,7 @@ end
 
 
 function ExitPuzzle(puzzle: Model)
+	LocalPlayer:SetAttribute("inPuzzle", false)
 	PuzzleFrame.Visible = false
 	CurrentCamera.CameraType = Enum.CameraType.Custom
 	puzzle.Interactable:SetAttribute("Visible", true)
@@ -79,7 +80,8 @@ end
 
 function AccessPuzzle(puzzle: Model)
 	local cableHolder = puzzle.CableHolder
-
+	Communicator.RemoteEvents.PuzzleAction:FireServer("CablePuzzle", "Accessed", puzzle)
+	
 	PuzzleFrame.Visible = true
 	CurrentCamera.CameraType = Enum.CameraType.Scriptable
 	Tweens.Tween(CurrentCamera, "CFrame", puzzle.CameraPart.CFrame, 0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
@@ -89,6 +91,7 @@ function AccessPuzzle(puzzle: Model)
 	local inputConnection1
 	local buttonConnection
 	
+	local totalNeededForCompletion = #puzzle.Left:GetChildren()
 	local cables = {} :: {[BasePart]: BasePart}
 	local function getTotalCompleted()
 		local k = 0
@@ -154,7 +157,7 @@ function AccessPuzzle(puzzle: Model)
 
 		if currentLeftPart.Color == Mouse.Target.Color then
 			cables[currentLeftPart] = currentCable
-			if getTotalCompleted() == 4 then
+			if getTotalCompleted() == totalNeededForCompletion then
 				buttonConnection:Disconnect()
 				inputConnection1:Disconnect()
 				inputConnection2:Disconnect()
@@ -192,6 +195,8 @@ function CablePuzzle:Init()
 				UI.alertPlayerTypeIncompatible()
 				return
 			end
+			if LocalPlayer:GetAttribute("inPuzzle") then return end
+			LocalPlayer:SetAttribute("inPuzzle", true)
 			AccessPuzzle(puzzle)
 		end)
 	end

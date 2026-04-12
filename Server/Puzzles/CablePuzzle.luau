@@ -2,13 +2,40 @@ local CablePuzzle = {}
 
 -- // Services
 local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- // Storages
+local Modules = ReplicatedStorage.Modules
+
+-- // Modules
+local Communicator = require(Modules.Communicator)
 
 -- // Classes
 local Tweens = require(game.StarterPlayer.StarterPlayerScripts.Client.Tweens)
+local Sounds = require(game.ServerScriptService.Server.Sounds)
+
+
+local CustomActions = {
+
+	["ServerCablePuzzle"] = function(player: Player, action: string, object: Model)
+		if action == "Accessed" then
+			Communicator.BindableEvents.StoryAction:Fire(player, "AccessedServerCables", object)
+			
+		elseif action == "Completed" then
+			Communicator.BindableEvents.StoryAction:Fire(player, "CompletedServerCables", object)
+			
+		end
+	end,
+}
+
 
 function CablePuzzle.OnPuzzleAction(player: Player, action: string, ...)
+	local puzzle: Model = ...
 	if action == "Completed" then
-		local puzzle: Model, cablesToReplicate: {{CFrame: CFrame, Color: Color3, Size: Vector3}} = ...
+		
+		local _, cablesToReplicate: {{CFrame: CFrame, Color: Color3, Size: Vector3}} = ...
+		Sounds:PlayUnderInstance("PannelComplete", puzzle.Interactable, true)
+		
 		Tweens.Tween(puzzle.BackgroundPart.SurfaceGui.ImageLabel, "ImageColor3", Color3.fromRGB(255, 255, 255), 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 		Tweens.Tween(puzzle.BackgroundPart.SurfaceGui.ImageLabel, "ImageTransparency", 0, 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 		for _, v in puzzle.Details.Lights:GetChildren() do
@@ -30,6 +57,9 @@ function CablePuzzle.OnPuzzleAction(player: Player, action: string, ...)
 		end
 	end
 
+	if CustomActions[puzzle.Name] then
+		CustomActions[puzzle.Name](player, action, ...)
+	end
 end
 
 function CablePuzzle:Init()
