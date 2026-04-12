@@ -362,6 +362,9 @@ function LoadClasses()
 	
 	local Interactables = require(script.Interactables)
 	Interactables:Init()
+	
+	local Subtitles = require(script.Subtitles)
+	Subtitles:Init()
 end
 
 function UI:Init()

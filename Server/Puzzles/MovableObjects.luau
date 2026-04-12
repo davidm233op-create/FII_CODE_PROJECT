@@ -15,6 +15,12 @@ local Sounds = require(game.ServerScriptService.Server.Sounds)
 
 
 local CustomActions = {
+	["SmallOfficeDoor"] = function(player: Player, action: string, object: Model)
+		if action ~= "Completed" then return end
+
+		Sounds:PlayUnderInstance("DoorOpening", object.MovedObject.PrimaryPart, true)
+	end,
+	
 	["BookShelf1"] = function(player: Player, action: string, object: Model)
 		if action ~= "Completed" then return end
 		Sounds:PlayUnderInstance("SlideBookShelf", object.MovedObject.PrimaryPart, true, {45, 55, 100})
@@ -66,6 +72,38 @@ local CustomActions = {
 		Communicator.BindableEvents.StoryAction:Fire(player, "KitchenDoorOpened", object)
 	end,
 	
+	
+	["ConferenceBox"] = function(player: Player, action: string, object: Model)
+		if action ~= "Completed" then return end
+		Sounds:PlayUnderInstance("BoxMoved", object.MovedObject.PrimaryPart, true, {95, 105, 100})
+		Communicator.BindableEvents.StoryAction:Fire(player, "ConferenceBoxMoved", object)
+	end,
+	
+	["ConferenceRoomDoor"] = function(player: Player, action: string, object: Model)
+		if action ~= "Completed" then return end
+		
+		Sounds:PlayUnderInstance("DoorOpening", object.MovedObject.PrimaryPart, true)
+		Communicator.BindableEvents.StoryAction:Fire(player, "ConferenceRoomOpened", object)
+	end,
+	
+	["ArchiveRoomDoor"] = function(player: Player, action: string, object: Model)
+		if action ~= "Completed" then return end
+		
+		if not object:GetAttribute("checkedDoor") and object.Configuration:GetAttribute("increment") == 0 then
+			object:SetAttribute("checkedDoor", true)
+			Sounds:PlayUnderInstance("LockedDoor", object.MovedObject.PrimaryPart, true)
+			Communicator.BindableEvents.StoryAction:Fire(player, "AttemptedOpeningArchiveDoor", object)
+			return
+		end
+		
+		if object.Configuration:GetAttribute("increment") == 0 then
+			Sounds:PlayUnderInstance("LockedDoor", object.MovedObject.PrimaryPart, true)
+			return
+		end
+		
+		Sounds:PlayUnderInstance("DoorOpening", object.MovedObject.PrimaryPart, true)
+		Communicator.BindableEvents.StoryAction:Fire(player, "ArchiveDoorOpened", object)
+	end,
 }
 
 

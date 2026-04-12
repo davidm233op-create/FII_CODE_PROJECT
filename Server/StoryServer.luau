@@ -12,13 +12,14 @@ local Communicator = require(Modules.Communicator)
 
 -- // Workspace
 local Puzzles = workspace.Puzzles
+local Misc = workspace.Misc
 
 -- // Classes
 local LightPuzzle = require(script.Parent.Puzzles.LightPuzzle)
 local NumberOrderPuzzle = require(script.Parent.Puzzles.NumberOrderPuzzle)
-
 local Tweens = require(game.StarterPlayer.StarterPlayerScripts.Client.Tweens)
 local Sounds = require(script.Parent.Sounds)
+
 
 
 function DebounceCheck(player: Player, debounceName: string, cooldown: number)
@@ -35,6 +36,312 @@ function DebounceCheck(player: Player, debounceName: string, cooldown: number)
 end
 
 
+local customPlaySoundWithSubtitles = {
+	["StartCutscene"] = function()
+		
+		task.wait(1.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"This is the story of one.. uh.. I mean two people who start their day at the office!",
+			0.02
+		)
+
+		task.wait(6)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Two employees. Neither of them where they're supposed to be.",
+			0.02
+		)
+
+		task.wait(4.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"But they're here and happy to help each other.",
+			0.02
+		)
+
+		task.wait(3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Distinctively, one of them reads the memos during work hours..",
+			0.02
+		)
+
+		task.wait(2.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The other doesn't even bother. But that's what makes us special!",
+			0.02
+		)
+		
+		task.wait(3.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"We're all different in our own ways!",
+			0.02
+		)
+
+		task.wait(3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"There is, however, one thing they have in common... Neither of them like the office.",
+			0.02
+		)
+
+		task.wait(5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"So today they want to escape!",
+			0.02
+		)
+
+		task.wait(2.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"They find themselves each at their desks, ready to take this adventure on!",
+			0.02
+		)
+
+		task.wait(5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["ServerDoorLocked"] = function()
+		
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The code was changed last Tuesday. Patricia from HR sent an email about it, but none of them read it!",
+			0.02
+		)
+		
+		task.wait(5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"So now they're going to have to find a way through that door!",
+			0.02
+		)
+
+		task.wait(4)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["2003Bookshelf"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The bookshelf has been here since 2003! No one has moved it! No one has tried!",
+			0.02
+		)
+
+		task.wait(5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"So one of them gets a bright idea!",
+			0.02
+		)
+
+		task.wait(4)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["ActivateStartPannel"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"It appears that pannel is going to have to be activated by somebody with above average intelligence!",
+			0.02
+		)
+
+		task.wait(7.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["AhTheServerRoom"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Ah, yes! The server room! Home to fourteen years of backed-up spreadsheets..",
+			0.02
+		)
+
+		task.wait(5.7)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Three dead plants, and one very confused router!",
+			0.02
+		)
+
+		task.wait(5.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["NeedAccessCablePannel"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"It seems like they're gonna need access to that cable pannel!",
+			0.02
+		)
+
+		task.wait(5.5)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+	["WittyClearenceServerRoom"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"One's looking at a door. And the other's connecting cables.",
+			0.02
+		)
+
+		task.wait(3.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Neither of them has clearance to be in this room. Fascinating.",
+			0.02
+		)
+
+		task.wait(4)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+	end,
+	
+	["PhysicsDegree"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The break room. The last place anyone expected to need a physics degree!",
+			0.02
+		)
+
+		task.wait(6.3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+	["TheMicrowaveSitsDark"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The microwave sits dark! The feline in the corner sits, presumably...",
+			0.02
+		)
+
+		task.wait(4.8)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+		
+		task.wait(0.3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"Pettable!",
+			0.02
+		)
+		task.wait(2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+	["TheMicrowaveHums"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The microwave hums. It is not heating anything.",
+			0.02
+		)
+
+		task.wait(4.8)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The Narrator chooses not to elaborate on why it's emitting light instead.",
+			0.02
+		)
+		task.wait(6)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+	["TheConferenceRoom"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The conference room...! Nine-ish chairs! One projector! Zero attendees!",
+			0.02
+		)
+
+		task.wait(6.2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The meeting, according to the calendar, has been running since Thursday!",
+			0.02
+		)
+		task.wait(6)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+	["BreakTheProjector"] = function()
+
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"The door is locked! The room, it seems, has a strict policy on leaving before the meeting is adjourned!",
+			0.02
+		)
+
+		task.wait(6.4)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+		task.wait(0.3)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			"There is no one to adjourn it! Someone has to put an end to the presentation!",
+			0.02
+		)
+		task.wait(6)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0)
+
+	end,
+	
+}
+
+function PlaySoundWithSubtitles(soundName: string, text: string, timeBetweenCharacters: number, destroyDelayAfterFinish: number)
+	local sound = Sounds[soundName]
+	if customPlaySoundWithSubtitles[soundName] then
+		task.spawn(function()
+			sound:Play()
+			customPlaySoundWithSubtitles[soundName]()
+		end)
+		return
+	end
+	
+	task.spawn(function()
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(true, 
+			text,
+			0.03
+		)
+
+		task.wait(sound.TimeLength)
+		task.wait(destroyDelayAfterFinish or 2)
+		Communicator.RemoteEvents.ToggleSubtitles:FireAllClients(false, nil, 0.01)
+	end)
+	Sounds:Play(soundName)
+end
+
+
 local StoryFunctions = {
 	RotateMirror = {
 		func = function(player: Player, mirrorObject: Model, clicker: BasePart)
@@ -46,16 +353,26 @@ local StoryFunctions = {
 			else
 				angleAddition = -15
 			end
-
+			
+			local axis = mirrorObject.Configuration:GetAttribute("rotateAxis")
+			local orientationCFrame
+			if axis == "z" then
+				orientationCFrame = CFrame.fromOrientation(0, 0, math.rad(angleAddition))
+			elseif axis == "y" then
+				orientationCFrame = CFrame.fromOrientation(0, math.rad(angleAddition), 0)
+			else
+				orientationCFrame = CFrame.fromOrientation(math.rad(angleAddition), 0, 0)
+			end
+			
 			local part = mirrorObject.Dynamic.PrimaryPart
-			Tweens.Tween(part, "CFrame", part.CFrame * CFrame.fromOrientation(math.rad(angleAddition), 0, 0), 1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+			Tweens.Tween(part, "CFrame", part.CFrame * orientationCFrame, 1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 
-			local particles = mirrorObject.Dynamic.ParticlePart.ParticleEmitter
-			particles.Enabled = true
-			Sounds:PlayUnderInstance("StoneGrinding", particles.Parent, true, {95, 105, 100})
-			task.delay(1, function()
-				particles.Enabled = false
-			end)
+			--local particles = mirrorObject.Dynamic.ParticlePart.ParticleEmitter
+			--particles.Enabled = true
+			--Sounds:PlayUnderInstance("StoneGrinding", particles.Parent, true, {95, 105, 100})
+			--task.delay(1, function()
+			--	particles.Enabled = false
+			--end)
 		end
 	},
 
@@ -77,13 +394,31 @@ local StoryFunctions = {
 		end
 	},
 	
+	
+	
+	-- // STORY START // -- -- // STORY START // -- -- // STORY START // -- -- // STORY START // -- -- // STORY START // --
+	
 	StartStory = {
 		func = function()
+			task.wait(5)
 			NumberOrderPuzzle.StartPuzzle(Puzzles.NumberOrderPuzzles.Start)
+			
+			PlaySoundWithSubtitles("StartCutscene")
+			task.wait(Sounds["StartCutscene"].TimeLength - 5)
+			
 			Communicator.RemoteEvents.StoryAction:FireAllClients("StartStory")
 			
-			Sounds:Play("HeadTowardsServerDoor")
+			task.wait(7)
+			
+			PlaySoundWithSubtitles("HeadTowardsServerDoor",
+				"They head towards the door with the big glowing SERVER sign!",
+				0.03
+			)
+			
 			task.wait(Sounds["HeadTowardsServerDoor"].TimeLength)
+			
+			
+			
 			local door = Puzzles.MovableObjects.ServerDoor
 			door.Interactable:SetAttribute("Visible", true)
 		end
@@ -92,10 +427,10 @@ local StoryFunctions = {
 	AttemptedToOpenServerDoor = {
 		func = function()
 			task.wait(2)
-			Sounds:Play("ServerDoorLocked")
+			PlaySoundWithSubtitles("ServerDoorLocked")
 			task.wait(Sounds["ServerDoorLocked"].TimeLength)
 			task.wait(2)
-			Sounds:Play("2003Bookshelf")
+			PlaySoundWithSubtitles("2003Bookshelf")
 			task.wait(Sounds["2003Bookshelf"].TimeLength)
 			local bookshelf = Puzzles.MovableObjects.StartBookshelf
 			bookshelf.Interactable:SetAttribute("Visible", true)
@@ -104,7 +439,8 @@ local StoryFunctions = {
 	
 	StartBookshelfMoved = {
 		func = function(player: Player, object: Model)
-			Sounds:Play("ActivateStartPannel")
+			task.wait(1)
+			PlaySoundWithSubtitles("ActivateStartPannel")
 			task.wait(Sounds["ActivateStartPannel"].TimeLength)
 			Puzzles.NumberOrderPuzzles.Start.Interactable:SetAttribute("Visible", true)
 		end
@@ -125,12 +461,13 @@ local StoryFunctions = {
 	ServerRoomOpened = {
 		func = function(player: Player, puzzle: Model)
 			task.wait(2)
-			Sounds:Play("AhTheServerRoom")
+			PlaySoundWithSubtitles("AhTheServerRoom")
 			task.wait(Sounds["AhTheServerRoom"].TimeLength)
 			
 			task.wait(2)
-			Sounds:Play("NeedAccessCablePannel")
+			PlaySoundWithSubtitles("NeedAccessCablePannel")
 			task.wait(Sounds["NeedAccessCablePannel"].TimeLength)
+
 			Puzzles.BreakableGlass.ServerGlass.Interactable:SetAttribute("Visible", true)
 			Puzzles.MovableObjects.ServerBox1.Interactable:SetAttribute("Visible", true)
 			Puzzles.MovableObjects.ServerBox2.Interactable:SetAttribute("Visible", true)
@@ -140,7 +477,7 @@ local StoryFunctions = {
 	AccessedServerCables = {
 		func = function(player: Player, puzzle: Model)
 			task.wait(1)
-			Sounds:Play("WittyClearenceServerRoom")
+			PlaySoundWithSubtitles("WittyClearenceServerRoom")
 		end
 	},
 	
@@ -158,10 +495,138 @@ local StoryFunctions = {
 	
 	KitchenDoorOpened = {
 		func = function(player: Player, puzzle: Model)
+			Communicator.RemoteEvents.StoryAction:FireAllClients("KitchenDoorOpened")
 			task.wait(2)
-			Sounds:Play("KitchenWittyRemark")
+			PlaySoundWithSubtitles("PhysicsDegree")
+			task.wait(Sounds["PhysicsDegree"].TimeLength)
+			
+			task.wait(2)
+			PlaySoundWithSubtitles("TheMicrowaveSitsDark")
+			task.wait(Sounds["TheMicrowaveSitsDark"].TimeLength)
+
+			Misc.KitchenMicrowave.Interactable:SetAttribute("Visible", true)
 		end
 	},
+	
+	KitchenMicrowaveToggled = {
+		func = function(player: Player, microwave: Model)
+			if microwave:GetAttribute("Toggled") == true then return end
+			
+			if not microwave:GetAttribute("ToggledBefore") then
+				microwave:SetAttribute("ToggledBefore", true)
+				
+				task.delay(2, function()
+					PlaySoundWithSubtitles("TheMicrowaveHums")
+				end)
+			end
+			
+			microwave:SetAttribute("Toggled", true)
+			microwave.Screen.Color = Color3.fromRGB(255, 191, 30)
+			LightPuzzle.StartPuzzle(Puzzles.LightPuzzles.KitchenLightPuzzle)
+			Sounds:PlayUnderInstance("Microwave5Seconds", microwave.Interactable, true)
+			
+			task.wait(3.5)
+			microwave.Screen.Color = Color3.fromRGB(159, 161, 172)
+			LightPuzzle.EndPuzzle(Puzzles.LightPuzzles.KitchenLightPuzzle)
+			
+			task.wait(1.5)
+			microwave:SetAttribute("Toggled", false)
+		end
+	},
+	
+	ConferenceRoomUnlocked = {
+		func = function(player: Player, puzzle: Model)
+			for _, cable in puzzle.Details.WallCable:GetChildren() do
+				cable.Material = Enum.Material.Neon
+				Tweens.Tween(cable, "Color", Color3.fromRGB(173, 100, 35), 0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+			end
+			
+			Puzzles.MovableObjects.ConferenceRoomDoor.Interactable:SetAttribute("Visible", true)
+		end
+	},
+	
+	ConferenceRoomOpened = {
+		func = function(player: Player, puzzle: Model)
+			NumberOrderPuzzle.StartPuzzle(Puzzles.NumberOrderPuzzles.Conference)
+			
+			PlaySoundWithSubtitles("TheConferenceRoom")
+		end
+	},
+	
+	ConferencePuzzleDone = {
+		func = function(player: Player, puzzle: Model)
+			local door = Puzzles.MovableObjects.ArchiveRoomDoor
+			door:SetAttribute("puzzleDone", true)
+			
+			for _, cable in puzzle.Details.WallCable:GetChildren() do
+				cable.Material = Enum.Material.Neon
+				Tweens.Tween(cable, "Color", Color3.fromRGB(173, 100, 35), 0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+			end
+			
+			if door:GetAttribute("boxMoved") then
+				Communicator.BindableEvents.StoryAction:Fire(player, "ConferenceRoomPuzzleAllDone")
+			end
+		end
+	},
+	
+	ConferenceBoxMoved = {
+		func = function(player: Player, puzzle: Model)
+			local door = Puzzles.MovableObjects.ArchiveRoomDoor
+			door:SetAttribute("boxMoved", true)
+
+			if door:GetAttribute("puzzleDone") then
+				Communicator.BindableEvents.StoryAction:Fire(player, "ConferenceRoomPuzzleAllDone")
+			end
+		end
+	},
+	
+	ConferenceRoomPuzzleAllDone = {
+		func = function()
+			Puzzles.MovableObjects.ArchiveRoomDoor.Interactable:SetAttribute("Visible", true)
+		end
+	},
+	
+	AttemptedOpeningArchiveDoor = {
+		func = function()
+			Puzzles.MovableObjects.ArchiveRoomDoor.Interactable:SetAttribute("Visible", false)
+			
+			PlaySoundWithSubtitles("BreakTheProjector")
+			task.wait(Sounds["BreakTheProjector"].TimeLength)
+			
+			Communicator.RemoteEvents.StoryAction:FireAllClients("AttemptedOpeningArchiveDoor")
+			Misc.Projector.Interactable:SetAttribute("Visible", true)
+		end
+	},
+	
+	ConferenceProjectorBroken = {
+		func = function(player: Player, projector: Model)
+			Puzzles.MovableObjects.ArchiveRoomDoor.Interactable:SetAttribute("Visible", true)
+			Puzzles.MovableObjects.ArchiveRoomDoor.Configuration:SetAttribute("increment", 1)
+			
+			projector.LightPart:Destroy()
+			projector.Light:Destroy()
+			projector.Interactable.Particles.Enabled = true
+			Sounds:PlayUnderInstance("ProjectorDestroyed", projector.Interactable, true)
+			projector.Interactable:SetAttribute("Visible", false)
+			projector.Screen.SurfaceGui:Destroy()
+		end
+	},
+	
+	ArchiveDoorOpened = {
+		func = function()
+			Communicator.RemoteEvents.StoryAction:FireAllClients("ArchiveDoorOpened")
+			for _, v in Players:GetChildren() do
+				local character = v.Character
+				character.HumanoidRootPart.Anchored = true
+			end
+			
+			task.wait(8)
+			for _, v in Players:GetChildren() do
+				v:Kick("You have escaped the office! :)")
+			end
+		end
+	},
+
 	
 }
 
@@ -189,10 +654,6 @@ function StoryServer:Init()
 	Players.PlayerRemoving:Connect(OnPlayerRemoving)
 	Communicator.RemoteEvents.StoryAction.OnServerEvent:Connect(OnStoryAction)
 	Communicator.BindableEvents.StoryAction.Event:Connect(OnStoryAction)
-	
-	task.delay(3, function()
-		StoryFunctions.StartStory.func()
-	end)
 
 end
 

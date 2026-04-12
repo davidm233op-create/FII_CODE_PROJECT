@@ -18,10 +18,11 @@ function Sounds:Init()
 end
 
 function Sounds:PlayUnderInstance(soundName: string, instance: Instance, destroyAfterPlay: boolean, randomPitch: {})
+	if Sounds[soundName] == nil then return end
+	local soundClone = Sounds[soundName]:Clone()
+	soundClone.Parent = instance
+	
 	task.spawn(function()
-		if Sounds[soundName] == nil then return end
-		local soundClone = Sounds[soundName]:Clone()
-		soundClone.Parent = instance
 
 		if randomPitch then
 			soundClone.PitchShiftSoundEffect.Octave = math.random(randomPitch[1], randomPitch[2]) / randomPitch[3]
@@ -34,6 +35,8 @@ function Sounds:PlayUnderInstance(soundName: string, instance: Instance, destroy
 			soundClone:Destroy()
 		end
 	end)
+	
+	return soundClone
 end
 
 function Sounds:Play(soundName: string, randomPitch: {})

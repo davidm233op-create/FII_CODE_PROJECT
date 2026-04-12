@@ -43,7 +43,9 @@ function GetClosestInteractable(originPosition: Vector3)
 		elseif object:IsA("Model") then
 			distance = (object:GetPivot().Position - originPosition).Magnitude
 		end
-		if distance < minDistance and distance < MAX_TRIGGER_DISTANCE then
+		
+		local maxDistance = object:GetAttribute("maxDistance") or MAX_TRIGGER_DISTANCE
+		if distance < minDistance and distance < maxDistance then
 			minDistance = distance
 			closest = object
 		end

@@ -27,6 +27,11 @@ local CustomActions = {
 		if action ~= "Completed" then return end
 		Communicator.BindableEvents.StoryAction:Fire(player, "ServerRoomUnlocked", puzzle)
 	end,
+	
+	["Conference"] = function(player: Player, action: string, puzzle)
+		if action ~= "Completed" then return end
+		Communicator.BindableEvents.StoryAction:Fire(player, "ConferencePuzzleDone", puzzle)
+	end,
 }
 
 function NumberOrderPuzzle.OnPuzzleAction(player: Player, action: string, ...)

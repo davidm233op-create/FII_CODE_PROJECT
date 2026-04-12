@@ -44,6 +44,7 @@ function OnPlayerSelectionAction(player: Player, action: "choseP1" | "choseP2")
 		
 		if PlayerHandler.P1 and PlayerHandler.P2 then
 			Communicator.RemoteEvents.PlayerSelectionAction:FireAllClients("bothPlayersChose")
+			Communicator.BindableEvents.StoryAction:Fire(player, "StartStory")
 		end
 	elseif action == "choseP2" then
 		player:SetAttribute("PlayerIndex", "P2")
@@ -52,6 +53,7 @@ function OnPlayerSelectionAction(player: Player, action: "choseP1" | "choseP2")
 		
 		if PlayerHandler.P1 and PlayerHandler.P2 then
 			Communicator.RemoteEvents.PlayerSelectionAction:FireAllClients("bothPlayersChose")
+			Communicator.BindableEvents.StoryAction:Fire(player, "StartStory")
 		end
 	end
 end
@@ -63,6 +65,12 @@ function PlayerHandler:Init()
 	PlayerHandler.TotalPlayers = 0
 	
 	Players.PlayerAdded:Connect(OnPlayerAdded)
+	Players.PlayerRemoving:Connect(function()
+		for _, player in Players:GetChildren() do
+			player:Kick()
+		end
+	end)
+	
 	Communicator.RemoteEvents.PlayerSelectionAction.OnServerEvent:Connect(OnPlayerSelectionAction)
 end
 
